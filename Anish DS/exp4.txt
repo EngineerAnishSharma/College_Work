@@ -1,0 +1,85 @@
+create table CUSTOMER(Cust_id varchar2(3), Lname varchar2(15), Fname varchar2(15), Area varchar2(2), Phone_no integer);
+
+insert into CUSTOMER values('A01','Border','Allan','SA',723622)
+insert into CUSTOMER values('A02','Shields','Tina','MO',123784)
+insert into CUSTOMER values('A03','Kumar','Ravi','BI',545621)
+insert into CUSTOMER values('A04','Rai','Sunita','CH',983724)
+insert into CUSTOMER values('A05',' ','Sachin','DR',253489)
+insert into CUSTOMER values('A06','Smith','James','WA',634672)
+
+select * from CUSTOMER;
+
+create table MOVIE(Movie_no integer, Title varchar2(15), Type varchar2(10), Star varchar2(25), Price number(8,2));
+
+insert into MOVIE values(1,'Carry On doctor','Comedy','Leslie Phollips',175.00);
+insert into MOVIE values(2,'The Firm','Thriller','Tom Cruise',200.00);
+insert into MOVIE values(3,'Pretty Woman','Romance','Richard Gere',150.55);
+insert into MOVIE values(4,'Home Alone','Comedy','Macaulay Culkin',150.00);
+insert into MOVIE values(5,'The Fugitive','Thriller','Harison Ford',200.00);
+insert into MOVIE values(6,'Coma','Supense','Michael Douglas',100.00);
+insert into MOVIE values(7,'Dracula','Horror','Gary Oldman',150.25);
+insert into MOVIE values(8,'Quick Change','Comedy','Bill Murray',190.00);
+
+select * from MOVIE;
+
+create table INVOICE(Inv_no varchar2(3), Movie_no integer, Cust_id varchar2(3), Issue_date Date, Return_date Date);
+
+insert into INVOICE values('I01',4,'A01','Jul-23-95','Jul-28-95');
+insert into INVOICE values('I02',3,'A02','Aug-12-95','Aug-15-95');
+insert into INVOICE values('I03',1,'A02','Sep-10-95','Sep-16-95');
+insert into INVOICE values('I04',6,'A03','Jul-23-95','Jul-24-95');
+insert into INVOICE values('I05',7,'A04','Jul-28-95','Jul-29-95');
+insert into INVOICE values('I06',2,'A06','Sep-01-95','Sep-04-95');
+insert into INVOICE values('I07',9,'A05','Aug-07-95','Aug-08-95');
+insert into INVOICE values('I08',9,'A01','Aug-18-95','Sep-22-95');
+insert into INVOICE values('I09',5,'A03','Jul-06-95','Jul-09-95');
+insert into INVOICE values('I10',8,'A06','Aug-02-95','Aug-05-95');
+
+select * from INVOICE;
+
+
+----Exp-3-----
+select * from CUSTOMER where Area='SA' or Area='BI' or Area='CH';
+select * from MOVIE order by Title;
+select sum(Price) "Total" from MOVIE;
+select max(Price) "MAXIMUM", min(Price) "MINIMUM" from MOVIE;
+select Type, count(Type) from MOVIE group by Type;
+select Type, avg(Price)  from MOVIE group by Type;
+select Type, avg(Price) from MOVIE group by Type having avg(Price)>150 ;
+select Type, avg(Price) from MOVIE where Type='Comedy' or Type='Thriller' and Price>=150 group by type;
+select Fname,Lname from CUSTOMER where Cust_id between 'A01' and 'A05';
+select distinct Type from MOVIE;
+select title from MOVIE where Price>150 and Price<=200;
+select * from CUSTOMER where rownum<=5 ;
+select * from CUSTOMER where rownum<=5 order by Fname;
+alter table CUSTOMER add Age numeric;
+insert  into Customer(Age) values(12,34,56,34,54,76);
+create table NewCustomer(fname varchar(10), lname varchar(10));
+insert into NewCustomer select fname,lname from CUSTOMER;
+select * from NewCustomer;
+select 'The Invoice No. Of Customer Id.',c.Cust_id,'is',i.Inv_no ,'and Movie No. Is',m.Movie_no from Invoice  i left join CUSTOMER  c on i.Cust_id=c.Cust_id left join Movie  m on i.Movie_no=m.Movie_no;
+
+
+------exp-4---------
+Select m.Movie_no,m.Title,m.Type,c.Cust_id,i.Issue_date,i.Return_date from Invoice i inner join Movie m on i.Movie_no=m.Movie_no inner join Customer c  on i.Cust_id=c.Cust_id order by Movie_no desc;
+Select m.Movie_no,m.Title,m.Type,c.Cust_id,i.Issue_date,i.Return_date from Invoice i left join Movie m on i.Movie_no=m.Movie_no left join Customer c  on i.Cust_id=c.Cust_id order by Movie_no desc;
+Select m.Movie_no,m.Title,m.Type,c.Cust_id,i.Issue_date,i.Return_date from Invoice i right join Movie m on i.Movie_no=m.Movie_no right join Customer c  on i.Cust_id=c.Cust_id order by Movie_no desc;
+Select m.Movie_no,m.Title,m.Type,c.Cust_id,i.Issue_date,i.Return_date from Invoice i full outer join Movie m on i.Movie_no=m.Movie_no full outer join Customer c  on i.Cust_id=c.Cust_id order by Movie_no desc;
+select distinct fname,lname from Customer c left join invoice i on c.Cust_id=i.Cust_id ;
+select m.title,m.Type from Invoice i inner join Movie m on i.Movie_no=m.Movie_no inner join Customer c  on i.Cust_id=c.Cust_id where c.fname='Tina';
+select distinct fname,lname from Customer c left join invoice i on c.Cust_id=i.Cust_id where i.issue_date> 'Jul-23-95';
+select c.fname,c.lname,c.Area from Customer c left join invoice i on c.Cust_id=i.Cust_id where i.Inv_no='I10';
+select c.fname,c.lname,m.Movie_no from Invoice i inner join Movie m on i.Movie_no=m.Movie_no inner join Customer c  on i.Cust_id=c.Cust_id where i.Issue_date is not null ;
+select c.Cust_id, c.fname,c.lname from Invoice i inner join Customer c  on i.Cust_id=c.Cust_id where i.Movie_no=9;
+select m.Movie_no from Invoice i inner join Movie m on i.Movie_no=m.Movie_no inner join Customer c  on i.Cust_id=c.Cust_id where c.fname='Tina' or c.fname='Allan';
+create view Tina_Allan(movie_no) as select m.Movie_no from Invoice i inner join Movie m on i.Movie_no=m.Movie_no inner join Customer c  on i.Cust_id=c.Cust_id where c.fname='Tina' or c.fname='Allan';
+
+select * from Tina_Allan ;
+
+CREATE OR REPLACE VIEW Tina_Allan AS
+select m.Movie_no, m.Price from Invoice i inner join Movie m on i.Movie_no=m.Movie_no inner join Customer c  on i.Cust_id=c.Cust_id where c.fname='Tina' or c.fname='Allan';
+
+
+drop view Tina_Allan;
+
+
