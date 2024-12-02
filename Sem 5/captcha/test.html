@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function Examples</title>
+    <style>
+        body {
+            height: 2000px; /* Increase height to enable scrolling */
+            font-family: Arial, sans-serif;
+        }
+        .info {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            z-index: 1000;
+        }
+        textarea {
+            width: 300px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="info" id="info">Scroll position: 0</div>
+    <h1>Function Examples</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula est vel nisl fermentum...</p>
+    <textarea placeholder="Type something..."></textarea>
+
+    <script>
+        // Mouse Movement Patterns
+        function trackMouse(event) {
+            console.log(`Mouse moved to: ${event.clientX}, ${event.clientY}`);
+        }
+        document.addEventListener('mousemove', trackMouse);
+
+        // Keystroke Dynamics
+        function recordKeystrokes(event) {
+            console.log(`Key pressed: ${event.key}`);
+        }
+        document.addEventListener('keydown', recordKeystrokes);
+
+        // Click Patterns
+        function logClicks(event) {
+            console.log(`Clicked at: ${event.clientX}, ${event.clientY}`);
+        }
+        document.addEventListener('click', logClicks);
+
+        // Scroll Behavior
+        function monitorScroll() {
+            const scrollY = window.scrollY;
+            document.getElementById('info').textContent = `Scroll position: ${scrollY}`;
+            console.log(`Scroll position: ${scrollY}`);
+        }
+        window.addEventListener('scroll', monitorScroll);
+
+        // Form-Filling Behavior
+        function trackForm(event) {
+            console.log(`Form filled: ${event.target.name}`);
+        }
+        document.querySelector('textarea').addEventListener('input', trackForm);
+
+        // Text Highlighting and Copy/Paste Events
+        function captureTextEvents(event) {
+            console.log(`Text event: ${event.type}`);
+        }
+        document.addEventListener('copy', captureTextEvents);
+        document.addEventListener('paste', captureTextEvents);
+        document.addEventListener('select', captureTextEvents);
+
+        // Device Orientation
+        function detectOrientation(event) {
+            console.log(`Orientation: ${event.alpha}, ${event.beta}, ${event.gamma}`);
+        }
+        window.addEventListener('deviceorientation', detectOrientation);
+
+        // User-Agent String
+        function getUserAgent() {
+            console.log(navigator.userAgent);
+        }
+        getUserAgent();
+
+        // Browser Plugins
+        function listPlugins() {
+            console.log(navigator.plugins);
+        }
+        listPlugins();
+
+        // Battery Status
+        function checkBattery() {
+            navigator.getBattery().then(function(battery) {
+                console.log(`Battery level: ${battery.level * 100}%`);
+            });
+        }
+        checkBattery();
+
+        // HTTP Errors
+        function logHttpErrors(response) {
+            if (!response.ok) {
+                console.log(`HTTP error: ${response.status}`);
+            }
+        }
+        fetch('https://jsonplaceholder.typicode.com/posts/1').then(logHttpErrors);
+
+        // Network Latency
+        function measureLatency() {
+            let start = Date.now();
+            fetch('https://jsonplaceholder.typicode.com/posts/1').then(() => {
+                console.log(`Network latency: ${Date.now() - start} ms`);
+            });
+        }
+        measureLatency();
+
+        // Session Duration
+        let sessionStart = Date.now();
+        function trackSession() {
+            let duration = Date.now() - sessionStart;
+            console.log(`Session duration: ${Math.floor(duration / 1000)} seconds`);
+        }
+        window.addEventListener('unload', trackSession);
+
+        // Decision Latency
+        function recordDecisionTime(callback) {
+            let start = Date.now();
+            callback().then(() => {
+                console.log(`Decision latency: ${Date.now() - start} ms`);
+            });
+        }
+        recordDecisionTime(() => fetch('https://jsonplaceholder.typicode.com/posts/1'));
+
+        // Interaction Latency
+        function measureInteractionTime(event, callback) {
+            let start = Date.now();
+            event.target.addEventListener('interaction', () => {
+                console.log(`Interaction latency: ${Date.now() - start} ms`);
+            });
+            callback();
+        }
+        measureInteractionTime({ target: document.querySelector('textarea') }, () => console.log('Interaction started'));
+
+        // Tab Switching
+        function monitorTabSwitch() {
+            console.log('Tab switched');
+        }
+        document.addEventListener('visibilitychange', monitorTabSwitch);
+
+        // Media Playback
+        function trackPlayback(event) {
+            console.log(`Media playback ${event.type}`);
+        }
+        let video = document.createElement('video');
+        video.src = 'https://www.w3schools.com/html/mov_bbb.mp4';
+        video.controls = true;
+        document.body.appendChild(video);
+        video.addEventListener('play', trackPlayback);
+        video.addEventListener('pause', trackPlayback);
+
+        // JavaScript Errors
+        function logJsErrors(event) {
+            console.log(`JavaScript error: ${event.message}`);
+        }
+        window.addEventListener('error', logJsErrors);
+
+        // Touch Events
+        function recordTouchEvents(event) {
+            console.log(`Touch event: ${event.type}`);
+        }
+        document.addEventListener('touchstart', recordTouchEvents);
+        document.addEventListener('touchend', recordTouchEvents);
+
+        // Time of Day
+        function getCurrentTime() {
+            console.log(new Date().toLocaleTimeString());
+        }
+        getCurrentTime();
+
+        // Reading Time
+        function calculateReadTime(text) {
+            let wordsPerMinute = 200;
+            let wordCount = text.split(' ').length;
+            let readTime = Math.ceil(wordCount / wordsPerMinute);
+            console.log(`Estimated reading time: ${readTime} minutes`);
+        }
+        calculateReadTime(document.body.innerText);
+
+        // Commenting and Sharing
+        function trackComments(event) {
+            console.log(`Comment added: ${event.target.value}`);
+        }
+        document.querySelector('textarea').addEventListener('input', trackComments);
+    </script>
+</body>
+</html>
